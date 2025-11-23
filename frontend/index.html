@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Interview Practice Partner</title>
+    <link rel="stylesheet" href="styles/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>AI Interview Practice Partner</h1>
+            <p>Practice makes perfect. Get ready for your next job interview!</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Setup Section -->
+            <div id="setup-section" class="section active">
+                <h2>Interview Setup</h2>
+                <div class="form-group">
+                    <label for="role-select">Select Target Role:</label>
+                    <select id="role-select">
+                        <option value="Software Engineer">Software Engineer</option>
+                        <option value="Data Scientist">Data Scientist</option>
+                        <option value="Product Manager">Product Manager</option>
+                        <option value="Sales Representative">Sales Representative</option>
+                        <option value="Marketing Manager">Marketing Manager</option>
+                        <option value="UX Designer">UX Designer</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="resume-upload">Upload Resume (Optional):</label>
+                    <input type="file" id="resume-upload" accept=".pdf,.docx,.txt">
+                    <small>Supported formats: PDF, DOCX, TXT</small>
+                </div>
+
+                <div class="form-group">
+                    <label>Interaction Mode:</label>
+                    <div class="radio-group">
+                        <label>
+                            <input type="radio" name="mode" value="voice" checked> Voice Mode
+                        </label>
+                        <label>
+                            <input type="radio" name="mode" value="text"> Text Mode
+                        </label>
+                    </div>
+                </div>
+
+                <button id="start-interview" class="btn-primary">Start Mock Interview</button>
+                
+                <div class="feature-list">
+                    <h3>Features:</h3>
+                    <ul>
+                        <li>✅ Role-specific interview questions</li>
+                        <li>✅ Smart follow-up questions</li>
+                        <li>✅ Resume-based questioning</li>
+                        <li>✅ Voice & text interaction</li>
+                        <li>✅ Detailed feedback report</li>
+                        <li>✅ 100% Free</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Interview Section -->
+            <div id="interview-section" class="section hidden">
+                <div class="interview-header">
+                    <h2>Mock Interview in Progress</h2>
+                    <div class="session-info">
+                        <span id="current-role">Role: Software Engineer</span>
+                        <button id="end-interview" class="btn-secondary">End Interview</button>
+                    </div>
+                </div>
+
+                <div class="conversation-container">
+                    <div id="conversation" class="conversation">
+                        <div class="message question">
+                            Welcome to your mock interview! I'll ask you role-specific questions and provide feedback at the end.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-section">
+                    <div id="voice-controls" class="voice-controls">
+                        <button id="record-btn" class="btn-record">🎤 Start Recording</button>
+                        <div id="recording-status" class="recording-status">Click the microphone to start recording your answer</div>
+                    </div>
+
+                    <div id="text-input" class="text-input hidden">
+                        <textarea id="answer-input" placeholder="Type your answer here... (Press Enter to submit, Shift+Enter for new line)"></textarea>
+                        <button id="submit-answer" class="btn-primary">Submit Answer</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feedback Section -->
+            <div id="feedback-section" class="section hidden">
+                <h2>Interview Feedback</h2>
+                <div class="feedback-header">
+                    <span id="feedback-role">Role: Software Engineer</span>
+                    <button id="download-feedback" class="btn-secondary">Download Feedback</button>
+                </div>
+                <div id="feedback-content" class="feedback-content">
+                    Feedback will appear here after the interview...
+                </div>
+                <div class="action-buttons">
+                    <button id="new-interview" class="btn-primary">Start New Interview</button>
+                    <button id="view-conversation" class="btn-secondary">View Full Conversation</button>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Built with ❤️ - Free AI Interview Practice Tool</p>
+        </footer>
+    </div>
+
+    <!-- Conversation Modal -->
+    <div id="conversation-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Full Interview Conversation</h3>
+                <button id="close-modal" class="btn-close">&times;</button>
+            </div>
+            <div id="modal-conversation" class="modal-conversation"></div>
+        </div>
+    </div>
+
+    <script src="scripts/app.js"></script>
+</body>
+</html>
