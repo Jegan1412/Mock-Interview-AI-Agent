@@ -17,7 +17,7 @@ interview_sessions = {}
 class FreeInterviewAgent:
     def __init__(self):
         self.role_questions = {
-            'Software Engineer': [
+            "Software Engineer": [
                 "Tell me about your experience with programming languages.",
                 "Describe a challenging technical problem you solved.",
                 "How do you approach code testing and debugging?",
@@ -26,7 +26,7 @@ class FreeInterviewAgent:
                 "How do you stay updated with new technologies?",
                 "Describe your experience with agile development."
             ],
-            'Data Scientist': [
+            "Data Scientist": [
                 "What machine learning algorithms are you most comfortable with?",
                 "Describe a data analysis project from start to finish.",
                 "How do you handle missing or incomplete data?",
@@ -35,7 +35,7 @@ class FreeInterviewAgent:
                 "How do you validate your models?",
                 "What Python libraries are you familiar with for data science?"
             ],
-            'Sales Representative': [
+            "Sales Representative": [
                 "Describe your sales process from lead to close.",
                 "How do you handle customer objections?",
                 "What's your experience with CRM software?",
@@ -44,7 +44,7 @@ class FreeInterviewAgent:
                 "What strategies do you use for prospecting?",
                 "How do you measure your sales performance?"
             ],
-            'Marketing Manager': [
+            "Marketing Manager": [
                 "Describe a successful marketing campaign you led.",
                 "How do you measure marketing ROI?",
                 "What's your experience with digital marketing channels?",
@@ -53,7 +53,7 @@ class FreeInterviewAgent:
                 "How do you analyze market trends?",
                 "What tools do you use for marketing analytics?"
             ],
-            'Product Manager': [
+            "Product Manager": [
                 "How do you prioritize features in a product roadmap?",
                 "Describe a product you managed from concept to launch.",
                 "How do you gather and analyze customer requirements?",
@@ -61,7 +61,7 @@ class FreeInterviewAgent:
                 "How do you handle conflicts between engineering and design teams?",
                 "Tell me about a time you had to make a tough product decision."
             ],
-            'UX Designer': [
+            "UX Designer": [
                 "Walk me through your design process.",
                 "How do you conduct user research?",
                 "What tools do you use for prototyping?",
@@ -70,7 +70,7 @@ class FreeInterviewAgent:
                 "How do you incorporate user feedback into your designs?"
             ]
         }
-        
+
         self.follow_up_questions = [
             "Can you give me a specific example?",
             "What was the outcome of that?",
@@ -81,102 +81,77 @@ class FreeInterviewAgent:
             "What feedback did you receive?",
             "How did that experience prepare you for this role?"
         ]
-    
+
     def generate_question(self, role, conversation_history, resume_data=None):
-        # If no questions asked yet, start with role-specific question
         if not conversation_history:
-            questions = self.role_questions.get(role, self.role_questions['Software Engineer'])
+            questions = self.role_questions.get(role, self.role_questions["Software Engineer"])
             question = random.choice(questions)
-            
-            # If resume data available, customize first question
-            if resume_data and 'skills' in resume_data and resume_data['skills']:
-                skills = resume_data['skills'][:3]  # Take first 3 skills
+
+            if resume_data and "skills" in resume_data and resume_data["skills"]:
+                skills = resume_data["skills"][:3]
                 question = f"I see you have experience with {', '.join(skills)}. {question}"
-            
+
             return question
-        
-        # If there's conversation history, ask follow-up questions
+
         last_user_answer = None
         for msg in reversed(conversation_history):
-            if msg.get('type') == 'answer':
-                last_user_answer = msg.get('content')
+            if msg.get("type") == "answer":
+                last_user_answer = msg.get("content")
                 break
-        
+
         if last_user_answer:
-            # Smart follow-up based on user's answer content
             answer_lower = last_user_answer.lower()
-            
-            if any(word in answer_lower for word in ['project', 'developed', 'built', 'created', 'designed']):
+
+            if any(w in answer_lower for w in ["project", "developed", "built", "created", "designed"]):
                 return "What were the main technologies or tools used in that project?"
-            elif any(word in answer_lower for word in ['team', 'collaborat', 'worked with', 'colleagues']):
+            elif any(w in answer_lower for w in ["team", "collaborat", "worked with", "colleagues"]):
                 return "What was your specific role and responsibilities in the team?"
-            elif any(word in answer_lower for word in ['problem', 'challenge', 'issue', 'difficult']):
+            elif any(w in answer_lower for w in ["problem", "challenge", "issue", "difficult"]):
                 return "What steps did you take to overcome that challenge?"
-            elif any(word in answer_lower for word in ['result', 'outcome', 'achieved', 'success']):
+            elif any(w in answer_lower for w in ["result", "outcome", "achieved", "success"]):
                 return "How did you measure the impact or success of that outcome?"
-            elif any(word in answer_lower for word in ['learn', 'grow', 'improve', 'develop']):
+            elif any(w in answer_lower for w in ["learn", "grow", "improve", "develop"]):
                 return "How have you applied what you learned in other situations?"
-            elif any(word in answer_lower for word in ['data', 'analysis', 'metrics', 'numbers']):
+            elif any(w in answer_lower for w in ["data", "analysis", "metrics", "numbers"]):
                 return "Can you share specific numbers or metrics that demonstrate the impact?"
-        
-        # Fallback to random follow-up question
+
         return random.choice(self.follow_up_questions)
-    
-        def generate_feedback(self, conversation_history, role):
-        # Analyze conversation and provide detailed feedback
-            user_answers = [msg['content'] for msg in conversation_history if msg.get('type') == 'answer']
-        
-            if not user_answers:
-                return "No answers provided during the interview. Please try to engage with the questions."
-        
-            # Analyze answer characteristics
-            total_answers = len(user_answers)
-            answer_lengths = [len(answer.split()) for answer in user_answers]
-            avg_length = sum(answer_lengths) / len(answer_lengths) if answer_lengths else 0
-            
-            # Simple content analysis
-            has_examples = any('example' in answer.lower() or 'specific' in answer.lower() for answer in user_answers)
-            has_metrics = any(any(char.isdigit() for char in answer) for answer in user_answers)
-            has_team_mention = any('team' in answer.lower() for answer in user_answers)
-            
-            # Generate personalized feedback - using regular strings to avoid syntax issues
-            feedback_lines = [
-                "📊 Interview Feedback for " + role + " Position",
-                "",
-                "✅ STRENGTHS:",
-                "• Provided " + str(total_answers) + " substantial answers",
-                "• Average answer length: " + str(round(avg_length, 1)) + " words - " + ("Good detail" if avg_length > 20 else "Could use more detail"),
-                "• " + ("Used specific examples effectively" if has_examples else "Included some examples"),
-                "• " + ("Included measurable results" if has_metrics else "Could add more metrics"),
-                "• " + ("Demonstrated teamwork experience" if has_team_mention else "Mentioned individual contributions"),
-                "",
-                "📈 AREAS FOR IMPROVEMENT:",
-                "1. Structure answers using STAR method (Situation, Task, Action, Result)",
-                "2. Include more specific numbers and metrics",
-                "3. Connect experiences to the target role", 
-                "4. Practice concise but comprehensive answers",
-                "",
-                "💡 TECHNICAL KNOWLEDGE:",
-                "• Showed understanding of " + role + " requirements",
-                "• Demonstrated relevant experience", 
-                "• Could benefit from more technical specifics",
-                "",
-                "🗣️ COMMUNICATION SKILLS:",
-                "• Good engagement level",
-                "• Clear expression of ideas",
-                "• Work on making answers more structured",
-                "",
-                "🎯 SPECIFIC TIPS FOR NEXT TIME:",
-                "1. Prepare 3-5 detailed accomplishment stories",
-                "2. Research common " + role + " interview questions",
-                "3. Practice explaining technical concepts simply",
-                "4. Record yourself to improve delivery",
-                "5. Use the STAR method for behavioral questions",
-                "",
-                "Remember: Practice makes perfect! Each mock interview helps you improve."
-            ]
-            
-            return "\n".join(feedback_lines)
+
+    def generate_feedback(self, conversation_history, role):
+        user_answers = [msg["content"] for msg in conversation_history if msg.get("type") == "answer"]
+
+        if not user_answers:
+            return "No answers provided during the interview. Please try to engage with the questions."
+
+        total_answers = len(user_answers)
+        answer_lengths = [len(a.split()) for a in user_answers]
+        avg_length = sum(answer_lengths) / len(answer_lengths)
+
+        has_examples = any("example" in a.lower() or "specific" in a.lower() for a in user_answers)
+        has_metrics = any(any(ch.isdigit() for ch in a) for a in user_answers)
+        has_team_mention = any("team" in a.lower() for a in user_answers)
+
+        feedback_lines = [
+            f"📊 Interview Feedback for {role} Position",
+            "",
+            "✅ STRENGTHS:",
+            f"• Provided {total_answers} substantial answers",
+            f"• Average answer length: {round(avg_length,1)} words",
+            f"• {'Used specific examples effectively' if has_examples else 'Include more concrete examples'}",
+            f"• {'Included measurable results' if has_metrics else 'Try adding more metrics'}",
+            f"• {'Showed teamwork experience' if has_team_mention else 'Mention teamwork contributions'}",
+            "",
+            "📈 AREAS FOR IMPROVEMENT:",
+            "1. Use STAR method (Situation, Task, Action, Result)",
+            "2. Add numbers and measurable impact",
+            "3. Relate answers more to the role",
+            "4. Provide more structured and clear responses",
+            "",
+            "🎯 FINAL TIP:",
+            "Practice answering with more depth and real examples for better impact."
+        ]
+
+        return "\n".join(feedback_lines)
 
 # Initialize the free agent
 interview_agent = FreeInterviewAgent()
