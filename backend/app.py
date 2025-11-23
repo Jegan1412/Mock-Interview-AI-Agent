@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify, send_from_directory
+from flask_cors import CORS
 import os
 import json
 import random
@@ -6,6 +7,7 @@ from utils.resume_parser import parse_resume
 from utils.voice_processor import speech_to_text, text_to_speech
 
 app = Flask(__name__, static_folder='../frontend', static_url_path='')
+CORS(app)
 
 # No CORS needed since we're serving everything from same origin
 
