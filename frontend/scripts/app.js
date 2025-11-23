@@ -175,7 +175,7 @@ class InterviewApp {
             formData.append('audio', audioBlob, 'recording.webm');
             formData.append('session_id', this.sessionId);
 
-            const response = await fetch('/api/process-voice-answer', {
+            const response = await fetch(this.apiBaseUrl + '/api/process-voice-answer', {
                 method: 'POST',
                 body: formData
             });
