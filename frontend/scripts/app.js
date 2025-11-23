@@ -270,7 +270,7 @@ class InterviewApp {
         formData.append('session_id', this.sessionId);
 
         try {
-            await fetch('/api/upload_resume', {
+            await fetch(this.apiBaseUrl + '/api/upload_resume', {
                 method: 'POST',
                 body: formData
             });
