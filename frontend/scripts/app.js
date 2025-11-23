@@ -5,7 +5,7 @@ class InterviewApp {
         this.mediaRecorder = null;
         this.audioChunks = [];
         this.currentMode = 'text'; // Start with text mode for reliability
-        this.apiBaseUrl = ''; // Empty string for same-origin requests
+        this.apiBaseUrl = 'https://interview-backend.onrender.com'; // Empty string for same-origin requests
         
         this.initializeElements();
         this.attachEventListeners();
